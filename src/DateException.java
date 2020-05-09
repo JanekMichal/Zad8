@@ -1,8 +1,5 @@
-public class DateException extends Exception
-{
-    public DateException(){}
-    public  String ShowWarning()
-    {
-        return "Date has already expired!";
+public class DateException extends Throwable {
+    public DateException() {
+        System.out.println("Date has already expired!");
     }
 }

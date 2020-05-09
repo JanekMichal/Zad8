@@ -1,26 +1,36 @@
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-public class Server {
-    private static final int PORT = 9090;
-
+public class Server extends Thread {
+    private static final int PORT = 9091;
+    private static ArrayList<ClientHandler> clients = new ArrayList<>();
+    private static ExecutorService pool = Executors.newFixedThreadPool(4);
+    
     public static void main(String[] args) throws IOException {
-         ServerSocket listener = new ServerSocket(PORT);
-         System.out.println("[SERVER] Waiting for client connection... ");
 
-         Socket client = listener.accept();
-         System.out.println("[SERVER] Connected to client. ");
+        ServerSocket listener = new ServerSocket(PORT);
+        System.out.println("[SERVER] Waiting for client connection... ");
+        while(true) {
 
-         PrintWriter out = new PrintWriter(client.getOutputStream(), true);
-         out.println((new Date()).toString());
+            Socket client = listener.accept();
+            System.out.println("[SERVER] Connected to client. ");
+            ClientHandler clientThread  = new ClientHandler(client);
+            clients.add(clientThread);
+
+            pool.execute(clientThread);
+        }
+
+        //PrintWriter out = new PrintWriter(client.getOutputStream(), true);
+         //out.println((new Date()).toString());
 
 
-         System.out.println("[SERVER] Sent date. Closing.");
-         client.close();
-         listener.close();
+         //System.out.println("[SERVER] Sent date. Closing.");
+         //client.close();
+         //listener.close();
 
 
 
