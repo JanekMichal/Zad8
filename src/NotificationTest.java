@@ -3,11 +3,9 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Scanner;
 
 public class NotificationTest implements Serializable {
     public static void main(String[] args) throws ParseException, DateException {
-        Scanner scanner = new Scanner(System.in);
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         //String input = scanner.nextLine();              //from user input
 

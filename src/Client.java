@@ -1,9 +1,10 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.ServerSocket;
+import java.io.*;
 import java.net.Socket;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Scanner;
 
 public class Client {
     private static final int SERVER_PORT = 9091;
@@ -11,34 +12,33 @@ public class Client {
 
     public static void main(String[] args) throws IOException {
         Socket socket = new Socket(SERVER_IP, SERVER_PORT);
-        BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        BufferedReader keyboard = new BufferedReader(new InputStreamReader(System.in));
-        PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-
+        //BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Scanner scanner = new Scanner(System.in);
+        ObjectOutputStream OOS = new ObjectOutputStream(socket.getOutputStream());
+        ObjectInputStream OIS = new ObjectInputStream(socket.getInputStream());
         while(true) {
-            System.out.println("Podaj datę:");
-            String command = keyboard.readLine();
-            if(command.equals("Q"))  break;
-
-            out.println(command);
-
-            String serverResponse = input.readLine();
-            System.out.println("Server response: " + serverResponse);
-        }
-    }
-        /*try {
             System.out.println("Set your notification time. The format is yyyy-MM-dd HH:mm:ss");
-            String settingDate = "2020-5-8 11:30:10";
-            //String settingDate = scanner.nextLine();  //odkomentować po napisaniu programu
+            String settingDate = scanner.nextLine();
+            //String settingDate = "2020-5-10 20:02:00";
             try {
                 Date date = dateFormat.parse(settingDate);
-                System.out.println("Now, type your notification text:");
-                String note = scanner.nextLine();
-                Notification newNote = new Notification(date, note);                        //Tworzenie notyfikacji
-                OOS.writeObject(newNote);                                                    //przesłanie notyfikacji do servera
-                OOS.flush();
+                Notification newNote = new Notification(date);
+                System.out.println("Your Notification is set to " + settingDate);
+                try {
+                    System.out.println("Now, type your notification text:");
+                    String note = scanner.nextLine();
+                    newNote.setMsg(note);
+                    OOS.writeObject(newNote);
+                    OOS.flush();
+                    Notification toShow = (Notification) OIS.readObject();
+                    System.out.println(toShow.getMsg());
+                } catch (ClassNotFoundException CNFE) {
+                    System.out.println("Class not found");
+                }
             } catch (ParseException PE) {
-                System.out.println("Wrong Date format.");
-            }
-        } catch (DateException DE) {}*/
+                System.out.println("Wrong date format. The format is yyyy-MM-dd HH:mm:ss");
+            } catch (DateException ignored) {}
+        }
+    }
 }
