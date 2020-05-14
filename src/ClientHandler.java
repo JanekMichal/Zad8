@@ -8,7 +8,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 
-public class ClientHandler implements Runnable{ // jest jedną instancją klienta dla serwera
+public class ClientHandler implements Runnable{
     private Socket client;
     private BufferedReader in;
     private PrintWriter out;
@@ -29,7 +29,7 @@ public class ClientHandler implements Runnable{ // jest jedną instancją klient
             ArrayList<Notification> Notifications = new ArrayList<>();
             while (true) {
                 Notification note = (Notification) OIS.readObject();
-                Notifications.add(note);         //co to jest castowanie sprawdzić
+                Notifications.add(note);
                 System.out.println("New  notification just arrived.");
 
                 (new Timer()).schedule(new TimerTask() {
@@ -59,6 +59,5 @@ public class ClientHandler implements Runnable{ // jest jedną instancją klient
         } catch (IOException | ClassNotFoundException IOE) {
             System.out.println("Client Disconnected. ");
         }
-
     }
 }
