@@ -37,5 +37,4 @@ public class Notification implements Serializable {
         else
             return 0;
     }
-
 }

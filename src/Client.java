@@ -19,7 +19,7 @@ public class Client {
         while(true) {
             System.out.println("Set your notification time. The format is yyyy-MM-dd HH:mm:ss");
             String settingDate = scanner.nextLine();
-            //String settingDate = "2020-5-14 14:29:00";
+            //String settingDate = "2020-5-14 16:47:00";
             try {
                 Date date = dateFormat.parse(settingDate);
                 Notification newNote = new Notification(date);

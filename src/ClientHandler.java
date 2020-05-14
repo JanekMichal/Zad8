@@ -1,8 +1,5 @@
 import java.io.*;
 import java.net.Socket;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -39,10 +36,8 @@ public class ClientHandler implements Runnable{
                                     OOS.writeObject(note);
                                     System.out.println("Sending " + note.getMsg());
                                 }
-                            }
-                            catch (DateException ignored){}
-                        }
-                        catch (IOException IOE) {
+                            } catch (DateException ignored){}
+                        } catch (IOException IOE) {
                             System.out.println("IOException in TimerTask");
                         }
                     }

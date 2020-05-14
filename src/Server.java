@@ -22,6 +22,5 @@ public class Server extends Thread {
 
             pool.execute(clientThread);
         }
-
     }
 }
