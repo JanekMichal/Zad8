@@ -21,15 +21,11 @@ public class ClientHandler implements Runnable{
 
     @Override
     public void run() {
-
         try {
             ObjectOutputStream OOS = new ObjectOutputStream(client.getOutputStream());
             ObjectInputStream OIS = new ObjectInputStream(client.getInputStream());
-
-            ArrayList<Notification> Notifications = new ArrayList<>();
             while (true) {
                 Notification note = (Notification) OIS.readObject();
-                Notifications.add(note);
                 System.out.println("New  notification just arrived.");
 
                 (new Timer()).schedule(new TimerTask() {
@@ -37,18 +33,14 @@ public class ClientHandler implements Runnable{
                     public void run() {
                         try {
                             Date data = new Date();
-                            for (Notification oneNote : Notifications) {
-                                System.out.println(data +" " + oneNote.date);
-                                try {
-                                    if (oneNote.compareDate(data) == 1) {
-                                        OOS.writeObject(oneNote);
-                                        System.out.println("Sending " + oneNote.getMsg());
-                                        Notifications.remove(oneNote);
-                                        break;
-                                    }
+                            System.out.println(data +" " + note.date);
+                            try {
+                                if (note.compareDate(data) == 1) {
+                                    OOS.writeObject(note);
+                                    System.out.println("Sending " + note.getMsg());
                                 }
-                                catch (DateException ignored){}
                             }
+                            catch (DateException ignored){}
                         }
                         catch (IOException IOE) {
                             System.out.println("IOException in TimerTask");
